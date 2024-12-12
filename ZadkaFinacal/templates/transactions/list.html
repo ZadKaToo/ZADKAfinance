@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- หัวข้อและปุ่มเพิ่มธุรกรรม -->
+<div class="md:flex md:items-center md:justify-between mb-6">
+    <div class="flex-1 min-w-0">
+        <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+            รายการธุรกรรม
+        </h2>
+    </div>
+    <div class="mt-4 flex md:mt-0 md:ml-4">
+        <a href="{{ url_for('transactions.add') }}"
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            + เพิ่มธุรกรรม
+        </a>
+    </div>
+</div>
+
+<!-- ตัวกรองและค้นหา -->
+<div class="bg-white shadow rounded-lg mb-6">
+    <div class="p-4">
+        <form method="GET" class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+            <!-- ช่วงวันที่ -->
+            <div>
+                <label for="date_range" class="block text-sm font-medium text-gray-700">ช่วงวันที่</label>
+                <select id="date_range" name="date_range" 
+                    class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md">
+                    <option value="7" {% if date_range == '7' %}selected{% endif %}>7 วันล่าสุด</option>
+                    <option value="30" {% if date_range == '30' %}selected{% endif %}>30 วันล่าสุด</option>
+                    <option value="90" {% if date_range == '90' %}selected{% endif %}>3 เดือนล่าสุด</option>
+                    <option value="180" {% if date_range == '180' %}selected{% endif %}>6 เดือนล่าสุด</option>
+                    <option value="custom" {% if date_range == 'custom' %}selected{% endif %}>กำหนดเอง</option>
+                </select>
+            </div>
+
+            <!-- วันที่เริ่มต้น (แสดงเมื่อเลือกกำหนดเอง) -->
+            <div id="start_date_container" class="{% if date_range != 'custom' %}hidden{% endif %}">
+                <label for="start_date" class="block text-sm font-medium text-gray-700">วันที่เริ่มต้น</label>
+                <input type="date" name="start_date" id="start_date" 
+                    value="{{ start_date }}"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- วันที่สิ้นสุด (แสดงเมื่อเลือกกำหนดเอง) -->
+            <div id="end_date_container" class="{% if date_range != 'custom' %}hidden{% endif %}">
+                <label for="end_date" class="block text-sm font-medium text-gray-700">วันที่สิ้นสุด</label>
+                <input type="date" name="end_date" id="end_date" 
+                    value="{{ end_date }}"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <!-- ประเภทธุรกรรม -->
+            <div>
+                <label for="type" class="block text-sm font-medium text-gray-700">ประเภท</label>
+                <select id="type" name="type" 
+                    class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md">
+                    <option value="">ทั้งหมด</option>
+                    <option value="income" {% if type == 'income' %}selected{% endif %}>รายรับ</option>
+                    <option value="expense" {% if type == 'expense' %}selected{% endif %}>รายจ่าย</option>
+                </select>
+            </div>
+
+            <!-- หมวดหมู่ -->
+            <div>
+                <label for="category" class="block text-sm font-medium text-gray-700">หมวดหมู่</label>
+                <select id="category" name="category" 
+                    class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md">
+                    <option value="">ทั้งหมด</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat }}" {% if category == cat %}selected{% endif %}>{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- จำนวนเงิน -->
+            <div>
+                <label for="amount_min" class="block text-sm font-medium text-gray-700">จำนวนเงินขั้นต่ำ</label>
+                <input type="number" name="amount_min" id="amount_min" 
+                    value="{{ amount_min }}"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    step="0.01">
+            </div>
+
+            <div>
+                <label for="amount_max" class="block text-sm font-medium text-gray-700">จำนวนเงินสูงสุด</label>
+                <input type="number" name="amount_max" id="amount_max" 
+                    value="{{ amount_max }}"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    step="0.01">
+            </div>
+
+            <!-- ปุ่มค้นหา -->
+            <div class="sm:col-span-2 md:col-span-4 flex justify-end space-x-2">
+                <a href="{{ url_for('transactions.list') }}" 
+                    class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    ล้างตัวกรอง
+                </a>
+                <button type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    ค้นหา
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- สรุปผลการค้นหา -->
+<div class="bg-white shadow rounded-lg mb-6">
+    <div class="p-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div>
+                <h4 class="text-sm font-medium text-gray-500">จำนวนธุรกรรม</h4>
+                <p class="mt-1 text-2xl font-semibold text-gray-900">{{ transaction_count }} รายการ</p>
+            </div>
+            <div>
+                <h4 class="text-sm font-medium text-gray-500">รายรับรวม</h4>
+                <p class="mt-1 text-2xl font-semibold text-green-600">฿{{ "{:,.2f}".format(total_income) }}</p>
+            </div>
+            <div>
+                <h4 class="text-sm font-medium text-gray-500">รายจ่ายรวม</h4>
+                <p class="mt-1 text-2xl font-semibold text-red-600">฿{{ "{:,.2f}".format(total_expense) }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- รายการธุรกรรม -->
+<div class="bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-700">
+            <thead class="bg-gray-900">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        <div class="flex items-center">
+                            วันที่
+                            <a href="{{ url_for('transactions.list', **request.args, sort='date', order='asc' if sort == 'date' and order == 'desc' else 'desc') }}"
+                                class="ml-1 text-gray-400 hover:text-gray-200">
+                                {% if sort == 'date' or not sort %}  
+                                    {% if order == 'asc' %}↑{% else %}↓{% endif %}
+                                {% else %}
+                                    ↕
+                                {% endif %}
+                            </a>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        ประเภท
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        หมวดหมู่
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        <div class="flex items-center justify-end">
+                            จำนวนเงิน
+                            <a href="{{ url_for('transactions.list', **request.args, sort='amount', order='asc' if sort == 'amount' and order == 'desc' else 'desc') }}"
+                                class="ml-1 text-gray-400 hover:text-gray-200">
+                                {% if sort == 'amount' %}
+                                    {% if order == 'asc' %}↑{% else %}↓{% endif %}
+                                {% else %}
+                                    ↕
+                                {% endif %}
+                            </a>
+                        </div>
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        บันทึก
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        จัดการ
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="bg-gray-800 divide-y divide-gray-700">
+                {% for transaction in transactions %}
+                <tr class="hover:bg-gray-700 transition-colors duration-150">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ transaction.date.strftime('%d/%m/%Y') }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            {% if transaction.type == 'income' %}
+                                bg-green-900 text-green-200
+                            {% else %}
+                                bg-red-900 text-red-200
+                            {% endif %}">
+                            {{ "รายรับ" if transaction.type == "income" else "รายจ่าย" }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ transaction.category }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-right 
+                        {% if transaction.type == 'income' %}
+                            text-green-400
+                        {% else %}
+                            text-red-400
+                        {% endif %}">
+                        ฿{{ "{:,.2f}".format(transaction.amount) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ transaction.note }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="{{ url_for('transactions.edit', id=transaction.id) }}" 
+                            class="text-blue-400 hover:text-blue-300 mr-3 transition-colors duration-150">แก้ไข</a>
+                        <a href="#" 
+                            onclick="confirmDelete('{{ transaction.id }}')"
+                            class="text-red-400 hover:text-red-300 transition-colors duration-150">ลบ</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- การแบ่งหน้า -->
+    {% if pages > 1 %}
+    <div class="bg-gray-800 px-4 py-3 flex items-center justify-between border-t border-gray-700 sm:px-6">
+        <!-- Mobile version -->
+        <div class="flex-1 flex justify-between sm:hidden">
+            {% if page > 1 %}
+            <a href="{{ url_for('transactions.list', page=page-1, **request.args) }}"
+                class="relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-200 bg-gray-700 hover:bg-gray-600">
+                ก่อนหน้า
+            </a>
+            {% endif %}
+            
+            {% if page < pages %}
+            <a href="{{ url_for('transactions.list', page=page+1, **request.args) }}"
+                class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-200 bg-gray-700 hover:bg-gray-600">
+                ถัดไป
+            </a>
+            {% endif %}
+        </div>
+    
+        <!-- Desktop version -->
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+            <!-- Results counter -->
+            <div>
+                <p class="text-sm text-gray-300">
+                    แสดง
+                    <span class="font-medium text-gray-200">{{ offset + 1 }}</span>
+                    ถึง
+                    <span class="font-medium text-gray-200">{{ offset + transactions|length }}</span>
+                    จากทั้งหมด
+                    <span class="font-medium text-gray-200">{{ total_count }}</span>
+                    รายการ
+                </p>
+            </div>
+    
+            <!-- Pagination buttons -->
+            <div>
+                <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    {% if page > 1 %}
+                    <a href="{{ url_for('transactions.list', page=page-1, **request.args) }}"
+                        class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-600 bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600">
+                        <span class="sr-only">ก่อนหน้า</span>
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    {% endif %}
+    
+                    {% for p in range(max(1, page-2), min(pages+1, page+3)) %}
+                    <a href="{{ url_for('transactions.list', page=p, **request.args) }}"
+                        class="relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium
+                        {% if p == page %}
+                            bg-gray-600 text-gray-200 border-gray-500
+                        {% else %}
+                            bg-gray-700 text-gray-300 hover:bg-gray-600
+                        {% endif %}">
+                        {{ p }}
+                    </a>
+                    {% endfor %}
+    
+                    {% if page < pages %}
+                    <a href="{{ url_for('transactions.list', page=page+1, **request.args) }}"
+                        class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-600 bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600">
+                        <span class="sr-only">ถัดไป</span>
+                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+<!-- Modal ยืนยันการลบ -->
+<div id="deleteModal" class="hidden fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            ยืนยันการลบธุรกรรม
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">
+                                คุณแน่ใจหรือไม่ที่จะลบธุรกรรมนี้? การดำเนินการนี้ไม่สามารถย้อนกลับได้
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <form id="deleteForm" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        ลบ
+                    </button>
+                </form>
+                <button type="button" onclick="hideDeleteModal()"
+                    class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    ยกเลิก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // แสดง/ซ่อนฟิลด์วันที่เมื่อเลือกช่วงเวลาแบบกำหนดเอง
+    document.getElementById('date_range').addEventListener('change', function(e) {
+        const customDateFields = document.querySelectorAll('#start_date_container, #end_date_container');
+        customDateFields.forEach(field => {
+            field.classList.toggle('hidden', e.target.value !== 'custom');
+        });
+    });
+
+    // ฟังก์ชันยืนยันการลบ
+    function confirmDelete(transactionId) {
+        const modal = document.getElementById('deleteModal');
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = `/transactions/${transactionId}/delete`;
+        modal.classList.remove('hidden');
+    }
+
+    function hideDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('hidden');
+    }
+
+</script>
+{% endblock %}
