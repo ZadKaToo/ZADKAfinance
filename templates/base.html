@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บันทึกการเงินส่วนตัว</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+        }
+        
+        
+        .gradient-background {
+            background: linear-gradient(180deg,
+                #000000 0%,
+                #06090f 15%,
+                #0f1729 30%,
+                #1a1f35 45%,
+                #1e2442 60%,
+                #1a1f35 75%,
+                #0f1729 90%,
+                #000000 100%
+            );
+            animation: gradient 15s ease infinite; 
+            background-size: 200% 200%;
+            position: relative;
+        }
+        
+        
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 50%;
+            background-color: #3b82f6;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .btn-primary {
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5);
+        }
+        
+        .alert {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<nav class="bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 shadow-xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <!-- Decorative Elements -->
+        <div class="absolute inset-0">
+            <div class="absolute top-0 -left-4 w-32 h-32 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-xl"></div>
+            <div class="absolute top-0 -right-4 w-32 h-32 bg-purple-500/20 rounded-full mix-blend-multiply filter blur-xl"></div>
+        </div>
+ 
+        <!-- Main Navigation Content -->
+        <div class="flex justify-between h-16 relative z-10">
+            <div class="flex">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="{{ url_for('index') }}" 
+                       class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 via-purple-300 to-pink-300 hover:scale-105 transform transition-all duration-300 hover:from-blue-200 hover:to-pink-200">
+                        บันทึกการเงิน
+                    </a>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="{{ url_for('dashboard.index') }}" 
+                       class="nav-link border-transparent text-blue-100 hover:text-white inline-flex items-center px-3 py-2 text-sm font-medium transition-all duration-300 hover:bg-white/10 rounded-lg">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                        </svg>
+                        แดชบอร์ด
+                    </a>
+                    <a href="{{ url_for('transactions.molist') }}" 
+                       class="nav-link border-transparent text-blue-100 hover:text-white inline-flex items-center px-3 py-2 text-sm font-medium transition-all duration-300 hover:bg-white/10 rounded-lg">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        ธุรกรรม
+                    </a>
+                    <a href="{{ url_for('goals.list') }}" 
+                       class="nav-link border-transparent text-blue-100 hover:text-white inline-flex items-center px-3 py-2 text-sm font-medium transition-all duration-300 hover:bg-white/10 rounded-lg">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                        เป้าหมาย
+                    </a>
+                    <a href="{{ url_for('goals.analytics') }}" 
+                       class="nav-link border-transparent text-blue-100 hover:text-white inline-flex items-center px-3 py-2 text-sm font-medium transition-all duration-300 hover:bg-white/10 rounded-lg">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                        </svg>
+                        วิเคราะห์เป้าหมาย
+                    </a>
+                    <a href="{{ url_for('debt.debtmain') }}" 
+                        class="nav-link border-transparent text-blue-100 hover:text-white inline-flex items-center px-3 py-2 text-sm font-medium transition-all duration-300 hover:bg-white/10 rounded-lg">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        จัดการหนี้สิน
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                <div class="ml-3 relative">
+                    {% if current_user.is_authenticated %}
+                        <button type="button" 
+                                id="user-menu-button"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                class="flex items-center space-x-3 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <div class="h-8 w-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                                <span class="text-white font-medium">{{ current_user.username[0].upper() }}</span>
+                            </div>
+                            <span class="text-white text-sm">{{ current_user.username }}</span>
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        
+                        <!-- Dropdown menu -->
+                        <div id="user-menu"
+                            class="hidden absolute right-0 mt-2 w-48 rounded-lg shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 transform opacity-0 scale-95 transition-all duration-200 ease-out">
+                            <a href="{{ url_for('user.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                                โปรไฟล์
+                            </a>
+                            <a href="{{ url_for('user.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200">
+                                ตั้งค่า
+                            </a>
+                            <div class="border-t border-gray-100"></div>
+                            <a href="{{ url_for('auth.logout') }}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200">
+                                ออกจากระบบ
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+ </nav>
+
+
+    <!-- Main Content -->
+    <main class="gradient-background min-h-screen py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-b from-gray-900 via-gray-800 to-black">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Company Info -->
+                <div class="transform hover:scale-105 transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-blue-400 tracking-wider uppercase">
+                        เกี่ยวกับเรา
+                    </h3>
+                    <p class="mt-4 text-base text-gray-300 hover:text-gray-100 transition-colors duration-300">
+                        แอพพลิเคชันช่วยจัดการการเงินส่วนบุคคล บันทึกรายรับ-รายจ่าย และติดตามเป้าหมายการออม
+                    </p>
+                </div>
+     
+                <!-- Quick Links -->
+                <div class="transform hover:scale-105 transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-purple-400 tracking-wider uppercase">
+                        เมนูลัด
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="{{ url_for('dashboard.index') }}" 
+                               class="text-base text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                                <span class="hover:translate-x-2 transition-transform duration-300">แดชบอร์ด</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('transactions.list') }}" 
+                               class="text-base text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                                <span class="hover:translate-x-2 transition-transform duration-300">ธุรกรรม</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('goals.list') }}" 
+                               class="text-base text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                                <span class="hover:translate-x-2 transition-transform duration-300">เป้าหมาย</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+     
+                <!-- Help -->
+                <div class="transform hover:scale-105 transition-all duration-300">
+                    <h3 class="text-sm font-semibold text-indigo-400 tracking-wider uppercase">
+                        ช่วยเหลือ
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                                <span class="hover:translate-x-2 transition-transform duration-300">คู่มือการใช้งาน</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                                <span class="hover:translate-x-2 transition-transform duration-300">คำถามที่พบบ่อย</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-300 hover:text-blue-400 transition-colors duration-300 flex items-center">
+                                <span class="hover:translate-x-2 transition-transform duration-300">ติดต่อเรา</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-8 border-t border-gray-700 pt-8">
+                <p class="text-base text-blue-400/80 text-center font-light">
+                    &copy; 2024 บันทึกการเงินส่วนตัว. All rights reserved.
+                </p>
+            </div>
+        </div>
+     </footer>
+
+
+    <!-- Scripts -->
+    <script>
+        // Wait for DOM to be loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Common elements
+            const userMenuButton = document.getElementById('user-menu-button') || document.querySelector('[aria-label="เปิดเมนูผู้ใช้"]');
+            const userMenu = document.getElementById('user-menu');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuOpenIcon = document.getElementById('menu-open');
+            const menuCloseIcon = document.getElementById('menu-close');
+        
+            // User menu functionality
+            if (userMenuButton && userMenu) {
+                userMenuButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = userMenu.classList.contains('hidden');
+                    
+                    if (isHidden) {
+                        userMenu.classList.remove('hidden');
+                        setTimeout(() => {
+                            userMenu.classList.remove('opacity-0', 'scale-95');
+                        }, 10);
+                    } else {
+                        userMenu.classList.add('opacity-0', 'scale-95');
+                        setTimeout(() => {
+                            userMenu.classList.add('hidden');
+                        }, 200);
+                    }
+                });
+            }
+        
+            // Mobile menu functionality
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    mobileMenu.classList.toggle('hidden');
+                    menuOpenIcon?.classList.toggle('hidden');
+                    menuCloseIcon?.classList.toggle('hidden');
+                });
+            }
+        
+            // Global click handler for closing menus
+            document.addEventListener('click', (event) => {
+                // Close user menu when clicking outside
+                if (userMenu && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => {
+                        userMenu.classList.add('hidden');
+                    }, 200);
+                }
+        
+                // Close mobile menu when clicking outside
+                if (mobileMenu && !mobileMenuButton?.contains(event.target) && !mobileMenu.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                    if (menuOpenIcon && menuCloseIcon) {
+                        menuOpenIcon.classList.remove('hidden');
+                        menuCloseIcon.classList.add('hidden');
+                    }
+                }
+            });
+        
+            // Auto-hide alerts after 5 seconds
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 300);
+                }, 5000);
+            });
+        });
+        </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

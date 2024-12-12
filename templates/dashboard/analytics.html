@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-sm shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <h1 class="text-2xl font-bold text-gray-900">การวิเคราะห์ทางการเงิน</h1>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- Financial Health Score -->
+        <div class="mb-8 bg-white rounded-xl shadow">
+            <div class="p-6">
+                <h2 class="text-lg font-medium text-gray-900 mb-4">คะแนนสุขภาพทางการเงิน</h2>
+                <div class="flex items-center gap-4">
+                    <div class="flex-1">
+                        <div class="h-4 bg-gray-200 rounded-full">
+                            <div class="h-4 bg-blue-600 rounded-full" 
+                                 style="width: {{ financial_health_score }}%"></div>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-900">{{ financial_health_score }}/100</div>
+                </div>
+                <p class="mt-2 text-sm text-gray-600">{{ financial_health_status }}</p>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white rounded-xl shadow">
+                <div class="p-6">
+                    <h2 class="text-lg font-medium text-gray-900 mb-4">แนวโน้มการเงิน</h2>
+                    <div class="h-80">
+                        <canvas id="trends-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow">
+                <div class="p-6">
+                    <h2 class="text-lg font-medium text-gray-900 mb-4">การกระจายค่าใช้จ่าย</h2>
+                    <div class="h-80">
+                        <canvas id="distribution-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Analysis -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {% for analysis in financial_analysis %}
+            <div class="bg-white rounded-xl shadow p-6">
+                <h3 class="text-lg font-medium text-gray-900">{{ analysis.title }}</h3>
+                <p class="mt-2 text-sm text-gray-600">{{ analysis.description }}</p>
+                <ul class="mt-4 space-y-2">
+                    {% for rec in analysis.recommendations %}
+                    <li class="flex items-center gap-2 text-sm">
+                        <svg class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        {{ rec }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+<!--กราฟaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-->
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // สร้างกราฟวงกลมแสดงสัดส่วนค่าใช้จ่าย
+    const categoryCtx = document.getElementById('category-chart').getContext('2d');
+    const categoryData = {{ category_distribution|tojson|safe }};
+
+    new Chart(categoryCtx, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(categoryData),
+            datasets: [{
+                data: Object.values(categoryData),
+                backgroundColor: [
+                    '#3B82F6', // blue
+                    '#10B981', // green
+                    '#F59E0B', // yellow
+                    '#EF4444', // red
+                    '#8B5CF6', // purple
+                    '#EC4899', // pink
+                    '#6366F1', // indigo
+                    '#14B8A6', // teal
+                    '#F97316', // orange
+                    '#6B7280'  // gray
+                ],
+                borderColor: '#1F2937',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        color: '#9CA3AF',
+                        font: {
+                            family: "'Kanit', sans-serif",
+                            size: 12
+                        },
+                        padding: 20,
+                        generateLabels: function(chart) {
+                            const data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map((label, i) => {
+                                    const value = data.datasets[0].data[i];
+                                    return {
+                                        text: `${label} (${value.toFixed(1)}%)`,
+                                        fillStyle: data.datasets[0].backgroundColor[i],
+                                        strokeStyle: data.datasets[0].backgroundColor[i],
+                                        lineWidth: 0,
+                                        hidden: isNaN(value) || value === 0,
+                                        index: i
+                                    };
+                                });
+                            }
+                            return [];
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(17, 24, 39, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    titleFont: {
+                        family: "'Kanit', sans-serif",
+                        size: 14
+                    },
+                    bodyFont: {
+                        family: "'Kanit', sans-serif",
+                        size: 13
+                    },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            return `${context.label}: ${value.toFixed(1)}%`;
+                        }
+                    }
+                }
+            },
+            cutout: '60%',
+            radius: '90%'
+        }
+    });
+});
+</script>
+{% endblock %}

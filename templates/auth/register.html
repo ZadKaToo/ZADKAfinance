@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 relative">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-blue-900/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-purple-900/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+        <div class="text-center animate-fade-in">
+            <h2 class="text-4xl font-extrabold text-white tracking-tight">
+                ลงทะเบียนใช้งาน
+            </h2>
+            <p class="mt-2 text-center text-sm text-gray-300">
+                หรือ
+                <a href="{{ url_for('auth.login') }}" 
+                   class="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-150">
+                    เข้าสู่ระบบ
+                </a>
+                ถ้ามีบัญชีอยู่แล้ว
+            </p>
+        </div>
+
+        <div class="mt-8 relative">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                <div class="w-full border-t border-gray-700"></div>
+            </div>
+        </div>
+
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md animate-fade-in-delay">
+            <div class="bg-gray-800/80 py-8 px-4 shadow-2xl sm:rounded-xl sm:px-10 relative border border-gray-700">
+                <!-- Glass effect overlay -->
+                <div class="absolute inset-0 backdrop-blur-xl rounded-xl"></div>
+                
+                <form class="space-y-6 relative" action="{{ url_for('auth.register') }}" method="POST">
+                    {{ form.csrf_token }}
+                    <div class="space-y-5">
+                        <div>
+                            {{ form.username.label(class="block text-sm font-medium text-gray-200") }}
+                            <div class="mt-1 group">
+                                {{ form.username(class="appearance-none block w-full px-3 py-2.5 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out group-hover:border-gray-500 sm:text-sm") }}
+                                {% if form.username.errors %}
+                                    {% for error in form.username.errors %}
+                                        <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div>
+                            {{ form.email.label(class="block text-sm font-medium text-gray-200") }}
+                            <div class="mt-1 group">
+                                {{ form.email(class="appearance-none block w-full px-3 py-2.5 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out group-hover:border-gray-500 sm:text-sm") }}
+                                {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
+                                        <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div>
+                            {{ form.password.label(class="block text-sm font-medium text-gray-200") }}
+                            <div class="mt-1 group">
+                                {{ form.password(class="appearance-none block w-full px-3 py-2.5 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out group-hover:border-gray-500 sm:text-sm") }}
+                                {% if form.password.errors %}
+                                    {% for error in form.password.errors %}
+                                        <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div>
+                            {{ form.password_confirm.label(class="block text-sm font-medium text-gray-200") }}
+                            <div class="mt-1 group">
+                                {{ form.password_confirm(class="appearance-none block w-full px-3 py-2.5 border border-gray-600 rounded-lg shadow-sm bg-gray-700 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out group-hover:border-gray-500 sm:text-sm") }}
+                                {% if form.password_confirm.errors %}
+                                    {% for error in form.password_confirm.errors %}
+                                        <p class="mt-1 text-sm text-red-400">{{ error }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex items-center h-5">
+                            <input id="accept_terms" name="accept_terms" type="checkbox" required
+                                class="h-4 w-4 text-blue-500 focus:ring-blue-500 bg-gray-700 border-gray-600 rounded transition duration-150 ease-in-out">
+                        </div>
+                        <label for="accept_terms" class="ml-2 block text-sm text-gray-200">
+                            ฉันยอมรับ
+                            <a href="#" class="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-150">
+                                เงื่อนไขการใช้งาน
+                            </a>
+                            และ
+                            <a href="#" class="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-150">
+                                นโยบายความเป็นส่วนตัว
+                            </a>
+                        </label>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                            class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform transition duration-150 hover:scale-[1.02] active:scale-[0.98] focus:ring-offset-gray-800">
+                            ลงทะเบียน
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+}
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.animate-blob {
+    animation: blob 7s infinite;
+}
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+.animate-fade-in-delay {
+    animation: fadeIn 0.6s ease-out 0.3s forwards;
+    opacity: 0;
+}
+</style>
+{% endblock %}

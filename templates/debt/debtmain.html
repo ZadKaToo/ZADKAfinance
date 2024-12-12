@@ -1,0 +1,354 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Header -->
+<div class="md:flex md:items-center md:justify-between mb-6">
+    <div class="flex-1 min-w-0">
+        <h2 class="text-2xl font-bold leading-7 text-blue-200 sm:text-3xl sm:truncate">
+            การจัดการหนี้สิน
+        </h2>
+    </div>
+    <div class="mt-4 flex md:mt-0 md:ml-4 space-x-3">
+        <button onclick="showCalculatorModal()" 
+            class="inline-flex items-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-200 bg-gray-700 hover:bg-gray-600 transition-colors duration-150">
+            <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            คำนวณดอกเบี้ย
+        </button>
+        <a href="{{ url_for('debt.add') }}"
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-150">
+            <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            เพิ่มรายการหนี้
+        </a>
+    </div>
+</div>
+
+<!-- Summary Stats -->
+<div class="bg-gray-800 shadow rounded-lg mb-6">
+    <div class="p-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+            <div>
+                <h4 class="text-sm font-medium text-gray-400">หนี้สินรวม</h4>
+                <p class="mt-1 text-2xl font-semibold text-red-400">
+                    ฿{{ "{:,.2f}".format(total_debt) }}
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-medium text-gray-400">ยอดผ่อนชำระต่อเดือน</h4>
+                <p class="mt-1 text-2xl font-semibold text-blue-400">
+                    ฿{{ "{:,.2f}".format(monthly_payment) }}
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-medium text-gray-400">ดอกเบี้ยรวมต่อเดือน</h4>
+                <p class="mt-1 text-2xl font-semibold text-yellow-400">
+                    ฿{{ "{:,.2f}".format(monthly_interest) }}
+                </p>
+            </div>
+            <div>
+                <h4 class="text-sm font-medium text-gray-400">จำนวนหนี้คงเหลือ</h4>
+                <p class="mt-1 text-2xl font-semibold text-gray-200">
+                    {{ total_count }} รายการ
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Debt Table -->
+<div class="bg-gray-800 shadow overflow-hidden sm:rounded-lg">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-700">
+            <thead class="bg-gray-900">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ประเภท</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ยอดเงินกู้</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">อัตราดอกเบี้ย</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ยอดคงเหลือ</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">ค่างวดต่อเดือน</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">วันชำระ</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">สถานะ</th>
+                    <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">จัดการ</th>
+                </tr>
+            </thead>
+            <tbody class="bg-gray-800 divide-y divide-gray-700">
+                {% for debt in debts %}
+                <tr class="hover:bg-gray-700 transition-colors duration-150">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ debt.type }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        ฿{{ "{:,.2f}".format(debt.amount) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-yellow-400">
+                        {{ debt.interest_rate }}%
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-red-400">
+                        ฿{{ "{:,.2f}".format(debt.remaining_amount) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-400">
+                        ฿{{ "{:,.2f}".format(debt.monthly_payment) }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                        {{ debt.payment_date }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            {% if debt.status == 'active' %}
+                                bg-green-900 text-green-200
+                            {% elif debt.status == 'overdue' %}
+                                bg-red-900 text-red-200
+                            {% else %}
+                                bg-gray-900 text-gray-200
+                            {% endif %}">
+                            {{ debt.status_display }}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="#" onclick="showPaymentModal('{{ debt.id }}')"
+                            class="text-blue-400 hover:text-blue-300 mr-3 transition-colors duration-150">ชำระเงิน</a>
+                        <a href="{{ url_for('debt.edit', id=debt.id) }}" 
+                            class="text-yellow-400 hover:text-yellow-300 mr-3 transition-colors duration-150">แก้ไข</a>
+                        <a href="#" onclick="confirmDelete('{{ debt.id }}')"
+                            class="text-red-400 hover:text-red-300 transition-colors duration-150">ลบ</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Calculator Modal -->
+<div id="calculatorModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
+        
+        <div class="relative bg-gray-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl w-full max-w-lg mx-4">
+            <div class="sm:flex sm:items-start">
+                <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                    <h3 class="text-lg leading-6 font-medium text-gray-200 mb-4">
+                        คำนวณการผ่อนชำระ
+                    </h3>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400">ยอดเงินกู้</label>
+                            <input type="number" id="loanAmount" class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400">อัตราดอกเบี้ยต่อปี (%)</label>
+                            <input type="number" id="interestRate" class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400">ระยะเวลา (เดือน)</label>
+                            <input type="number" id="loanTerm" class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200">
+                        </div>
+                        <div class="bg-gray-900 rounded-lg p-4 mt-4">
+                            <h4 class="text-sm font-medium text-gray-300 mb-3">ผลการคำนวณ</h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">ค่างวดต่อเดือน</span>
+                                    <span class="text-blue-400" id="monthlyPayment">฿0.00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">ดอกเบี้ยรวม</span>
+                                    <span class="text-yellow-400" id="totalInterest">฿0.00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-400">ยอดชำระทั้งหมด</span>
+                                    <span class="text-red-400" id="totalPayment">฿0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                <button onclick="calculateLoan()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    คำนวณ
+                </button>
+                <button onclick="hideCalculatorModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-600 shadow-sm px-4 py-2 bg-gray-700 text-base font-medium text-gray-200 hover:bg-gray-600 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm">
+                    ปิด
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
+        
+        <div class="relative bg-gray-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl w-full max-w-lg mx-4">
+            <div class="sm:flex sm:items-start">
+                <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-900 sm:mx-0 sm:h-10 sm:w-10">
+                    <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                </div>
+                <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                    <h3 class="text-lg leading-6 font-medium text-gray-200">
+                        ยืนยันการลบรายการ
+                    </h3>
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-400">
+                            คุณแน่ใจหรือไม่ที่จะลบรายการหนี้นี้? การดำเนินการนี้ไม่สามารถย้อนกลับได้
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                <form id="deleteForm" method="POST">
+                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        ลบ
+                    </button>
+                </form>
+                <button type="button" onclick="hideDeleteModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-600 shadow-sm px-4 py-2 bg-gray-700 text-base font-medium text-gray-200 hover:bg-gray-600 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm">
+                    ยกเลิก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div id="paymentModal" class="hidden fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75"></div>
+        
+        <div class="relative bg-gray-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl w-full max-w-lg mx-4">
+            <div class="sm:flex sm:items-start">
+                <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                    <h3 class="text-lg leading-6 font-medium text-gray-200 mb-4">
+                        บันทึกการชำระเงิน
+                    </h3>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400">จำนวนเงินที่ชำระ</label>
+                            <input type="number" id="paymentAmount" class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400">วันที่ชำระ</label>
+                            <input type="date" id="paymentDate" class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400">บันทึกเพิ่มเติม</label>
+                            <textarea id="paymentNote" rows="2" class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                <button onclick="submitPayment()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    บันทึกการชำระ
+                </button>
+                <button onclick="hidePaymentModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-600 shadow-sm px-4 py-2 bg-gray-700 text-base font-medium text-gray-200 hover:bg-gray-600 focus:outline-none sm:mt-0 sm:w-auto sm:text-sm">
+                    ยกเลิก
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentDebtId = null;
+
+    function showCalculatorModal() {
+        document.getElementById('calculatorModal').classList.remove('hidden');
+    }
+
+    function hideCalculatorModal() {
+        document.getElementById('calculatorModal').classList.add('hidden');
+    }
+
+    function calculateLoan() {
+        const amount = parseFloat(document.getElementById('loanAmount').value);
+        const rate = parseFloat(document.getElementById('interestRate').value) / 100 / 12; // Monthly rate
+        const term = parseInt(document.getElementById('loanTerm').value);
+
+        // Calculate monthly payment using PMT formula
+        const monthlyPayment = amount * rate * Math.pow(1 + rate, term) / (Math.pow(1 + rate, term) - 1);
+        const totalPayment = monthlyPayment * term;
+        const totalInterest = totalPayment - amount;
+
+        // Update results
+        document.getElementById('monthlyPayment').textContent = '฿' + monthlyPayment.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('totalInterest').textContent = '฿' + totalInterest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('totalPayment').textContent = '฿' + totalPayment.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+
+    function showPaymentModal(debtId) {
+        currentDebtId = debtId;
+        document.getElementById('paymentModal').classList.remove('hidden');
+        document.getElementById('paymentDate').valueAsDate = new Date();
+    }
+
+    function hidePaymentModal() {
+        document.getElementById('paymentModal').classList.add('hidden');
+        currentDebtId = null;
+    }
+
+    function submitPayment() {
+        const amount = document.getElementById('paymentAmount').value;
+        const date = document.getElementById('paymentDate').value;
+        const note = document.getElementById('paymentNote').value;
+
+        fetch(`/debts/${currentDebtId}/payment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                amount: amount,
+                date: date,
+                note: note
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function confirmDelete(debtId) {
+        const modal = document.getElementById('deleteModal');
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = `/debts/${debtId}/delete`;
+        modal.classList.remove('hidden');
+    }
+
+    function hideDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('hidden');
+    }
+
+    // Delete form submit handler
+    document.getElementById('deleteForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+{% endblock %}

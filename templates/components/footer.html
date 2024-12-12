@@ -1,0 +1,90 @@
+<!-- templates/components/footer.html -->
+<footer class="bg-white">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+            <!-- App Info -->
+            <div class="space-y-8 xl:col-span-1">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 tracking-wider uppercase">
+                        บันทึกการเงินส่วนตัว
+                    </h3>
+                    <p class="mt-4 text-base text-gray-500">
+                        แอพพลิเคชันช่วยจัดการการเงินส่วนบุคคล บันทึกรายรับ-รายจ่าย และติดตามเป้าหมายการออม
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 tracking-wider uppercase">
+                        เมนูลัด
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        {% if current_user.is_authenticated %}
+                        <li>
+                            <a href="{{ url_for('dashboard.index') }}" class="text-base text-gray-500 hover:text-gray-900">
+                                แดชบอร์ด
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('transactions.list') }}" class="text-base text-gray-500 hover:text-gray-900">
+                                ธุรกรรม
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('goals.list') }}" class="text-base text-gray-500 hover:text-gray-900">
+                                เป้าหมาย
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('dashboard.analytics') }}" class="text-base text-gray-500 hover:text-gray-900">
+                                รายงาน
+                            </a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="{{ url_for('auth.login') }}" class="text-base text-gray-500 hover:text-gray-900">
+                                เข้าสู่ระบบ
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('auth.register') }}" class="text-base text-gray-500 hover:text-gray-900">
+                                ลงทะเบียน
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-500 tracking-wider uppercase">
+                        ช่วยเหลือ
+                    </h3>
+                    <ul class="mt-4 space-y-4">
+                        <li>
+                            <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+                                คู่มือการใช้งาน
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+                                คำถามที่พบบ่อย
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-base text-gray-500 hover:text-gray-900">
+                                ติดต่อเรา
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 border-t border-gray-200 pt-8">
+            <p class="text-base text-gray-400 text-center">
+                © {{ now.year }} Personal Finance App. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
