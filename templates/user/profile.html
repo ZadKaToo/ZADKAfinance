@@ -17,52 +17,85 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Left Column - Basic Information -->
         <div class="lg:col-span-1 space-y-6">
-            <!-- Profile Picture -->
+            <!-- Profile Picture Card -->
             <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
                 <div class="flex flex-col items-center">
-                    <div class="relative">
-                        <div class="h-32 w-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden">
+                    <div class="relative group">
+                        <div class="h-32 w-32 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden ring-4 ring-gray-700 group-hover:ring-blue-500 transition-all duration-300">
                             {% if current_user.profile_image %}
                             <img src="{{ current_user.profile_image }}" alt="Profile" class="h-full w-full object-cover">
                             {% else %}
                             <span class="text-4xl text-white font-medium">{{ current_user.username[0].upper() }}</span>
                             {% endif %}
+                            <!-- Overlay on hover -->
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </div>
                         </div>
                         <button onclick="document.getElementById('profile_image').click()" 
-                            class="absolute bottom-0 right-0 bg-blue-600 rounded-full p-2 hover:bg-blue-700 transition-colors">
+                            class="absolute bottom-0 right-0 bg-blue-600 rounded-full p-2 hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                             </svg>
                         </button>
                         <input type="file" id="profile_image" class="hidden" accept="image/*">
                     </div>
-                    <h3 class="mt-4 text-lg font-medium text-gray-200">{{ current_user.username }}</h3>
-                    <p class="text-sm text-gray-400">{{ current_user.email }}</p>
+                    <div class="mt-4 text-center">
+                        <h3 class="text-lg font-medium text-gray-200">{{ current_user.username }}</h3>
+                        <p class="text-sm text-gray-400">{{ current_user.email }}</p>
+                        <div class="mt-2 text-xs text-gray-500">
+                            เข้าร่วมเมื่อ {{ current_user.created_at.strftime('%d/%m/%Y') }}
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Basic Settings -->
+            <!-- Basic Settings Card -->
             <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
-                <h3 class="text-lg font-medium text-gray-200 mb-4">ตั้งค่าพื้นฐาน</h3>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-medium text-gray-200">ตั้งค่าพื้นฐาน</h3>
+                    <span class="text-xs text-gray-500">แก้ไขล่าสุด: {{ current_user.updated_at.strftime('%d/%m/%Y') }}</span>
+                </div>
                 <div class="space-y-4">
-                    <!-- Currency -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-400">สกุลเงิน</label>
-                        <select class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200 focus:border-blue-500 focus:ring-blue-500">
-                            <option value="THB">บาท (THB)</option>
-                            <option value="USD">ดอลลาร์สหรัฐ (USD)</option>
-                            <option value="EUR">ยูโร (EUR)</option>
-                        </select>
-                    </div>
-
-                    <!-- Language -->
+                    <!-- Language Selection -->
                     <div>
                         <label class="block text-sm font-medium text-gray-400">ภาษา</label>
-                        <select class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200 focus:border-blue-500 focus:ring-blue-500">
-                            <option value="th">ไทย</option>
-                            <option value="en">English</option>
-                        </select>
+                        <div class="mt-1 relative">
+                            <select name="language" class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-200 focus:border-blue-500 focus:ring-blue-500">
+                                <option value="th" {% if current_user.language == 'th' %}selected{% endif %}>ไทย</option>
+                                <option value="en" {% if current_user.language == 'en' %}selected{% endif %}>English</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theme Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400">ธีม</label>
+                        <div class="mt-2 flex items-center space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="theme" value="dark" checked
+                                    class="text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-offset-gray-800">
+                                <span class="ml-2 text-sm text-gray-200">มืด</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="theme" value="light"
+                                    class="text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-offset-gray-800">
+                                <span class="ml-2 text-sm text-gray-200">สว่าง</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="theme" value="system"
+                                    class="text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-500 focus:ring-offset-gray-800">
+                                <span class="ml-2 text-sm text-gray-200">ระบบ</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,12 +160,13 @@
 
 {% block page_scripts %}
 <script>
-    function saveProfile() {
-        // Add your save profile logic here
-        // Show success message
+    // Common notification function
+    function showNotification(message, type = 'success') {
         const notification = document.createElement('div');
-        notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-500 opacity-0';
-        notification.textContent = 'บันทึกการเปลี่ยนแปลงเรียบร้อยแล้ว';
+        notification.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg transform transition-all duration-500 opacity-0 ${
+            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+        }`;
+        notification.textContent = message;
         document.body.appendChild(notification);
         
         // Animate in
@@ -149,7 +183,39 @@
     document.getElementById('profile_image')?.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
-            // Add your image upload logic here
+            // Create FormData and append file
+            const formData = new FormData();
+            formData.append('profile_image', file);
+
+            // Upload to server
+            fetch('{{ url_for("user.profile") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Preview image
+                    const img = document.querySelector('.h-32.w-32 img') || document.createElement('img');
+                    img.src = data.image_url;
+                    img.className = 'h-full w-full object-cover';
+                    document.querySelector('.h-32.w-32 span')?.remove();
+                    document.querySelector('.h-32.w-32')?.appendChild(img);
+                    
+                    showNotification('อัพโหลดรูปภาพเรียบร้อยแล้ว');
+                } else {
+                    showNotification(data.error || 'เกิดข้อผิดพลาดในการอัพโหลด', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('เกิดข้อผิดพลาดในการอัพโหลด', 'error');
+            });
+
+            // Preview image immediately while uploading
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = document.querySelector('.h-32.w-32 img') || document.createElement('img');

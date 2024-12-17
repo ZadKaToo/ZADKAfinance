@@ -7,22 +7,45 @@ from models import init_models, User
 from datetime import datetime
 from flask_wtf.csrf import CSRFProtect
 import socket
+import netifaces  # pip install netifaces
 
-# Get local IP address
-def get_local_ip():
+def get_network_info():
+    """Get all available network interfaces and IPs"""
+    network_info = []
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(('8.8.8.8', 80))
-        ip = s.getsockname()[0]
-        s.close()
-        return ip
+        # Get all network interfaces
+        interfaces = netifaces.interfaces()
+        
+        for iface in interfaces:
+            try:
+                # Get IPv4 addresses for this interface
+                addrs = netifaces.ifaddresses(iface).get(netifaces.AF_INET, [])
+                for addr in addrs:
+                    ip = addr['addr']
+                    # Skip localhost
+                    if ip != '127.0.0.1':
+                        network_info.append({
+                            'interface': iface,
+                            'ip': ip
+                        })
+            except Exception:
+                continue
+                
+        return network_info
     except Exception:
-        return '127.0.0.1'
+        # Fallback to simple IP detection
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(('8.8.8.8', 80))
+            ip = s.getsockname()[0]
+            s.close()
+            return [{'interface': 'default', 'ip': ip}]
+        except Exception:
+            return [{'interface': 'localhost', 'ip': '127.0.0.1'}]
 
 # Initialize extensions
 login_manager = LoginManager()
 mail = Mail()
-csrf = CSRFProtect()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -33,8 +56,6 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finance.db'
     
-    # Initialize CSRF protection
-    csrf.init_app(app)
     
     # Initialize database
     db = init_models(app)
@@ -79,14 +100,27 @@ def create_app(config_class=Config):
 app = create_app()
 
 if __name__ == '__main__':
-    # Get local IP and set port
-    local_ip = get_local_ip()
     port = 5000
     
-    # Print access URLs
-    print(f"\n✨ Server is running!")
-    print(f"🏠 Local access:     http://localhost:{port}")
-    print(f"🌐 Network access:   http://{local_ip}:{port}")
+    # Get network information
+    network_info = get_network_info()
+    
+    # Print server information
+    print("\n✨ Server is running!")
+    print("\n🏠 Local access:")
+    print(f"   http://localhost:{port}")
+    print(f"   http://127.0.0.1:{port}")
+    
+    if network_info:
+        print("\n🌐 Network access:")
+        for info in network_info:
+            print(f"   http://{info['ip']}:{port} ({info['interface']})")
+    
+    print("\n⚠️  Security Notes:")
+    print("   - Make sure your firewall allows connections on port 5000")
+    print("   - Only share access with trusted users on secure networks")
+    print("   - The server is running in debug mode (not recommended for production)")
+    
     print("\n⌨️  CTRL + C to stop the server\n")
     
     # Run the app with network access
