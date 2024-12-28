@@ -1,0 +1,436 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Hero Section -->
+<div class="min-h-screen relative overflow-hidden gradient-background perspective-3d">
+    <!-- Animated Background Elements -->
+    <div class="absolute inset-0">
+        <!-- Grid Lines -->
+        <div class="absolute inset-0 grid grid-cols-12 gap-4 opacity-5">
+            {% for i in range(12) %}
+                <div class="h-full border-r border-blue-500/20"></div>
+            {% endfor %}
+        </div>
+
+        <!-- Enhanced Floating Icons with Better Animation -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="floating-icon left-[10%] top-[20%]">
+                <svg class="w-8 h-8 text-blue-500/30 transform hover:scale-110 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div class="floating-icon right-[15%] top-[30%]">
+                <svg class="w-12 h-12 text-purple-500/20 transform hover:scale-110 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Enhanced Glowing Orbs -->
+        <div class="absolute top-0 -left-4 w-96 h-96 bg-gradient-to-br from-blue-500/30 via-blue-600/20 to-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-glow"></div>
+        <div class="absolute top-0 -right-4 w-96 h-96 bg-gradient-to-br from-indigo-500/30 via-purple-600/20 to-blue-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-glow-slow"></div>
+        <div class="absolute -bottom-8 left-20 w-96 h-96 bg-gradient-to-br from-blue-500/30 via-indigo-600/20 to-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-glow-slower"></div>
+    </div>
+
+    <!-- Main Content with Enhanced Styling -->
+    <div class="relative z-20">
+        <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8">
+            <div class="text-center space-y-12">
+                <!-- Enhanced Hero Title -->
+                <div class="space-y-5 perspective-text">
+                    <h1 class="text-5xl font-extrabold sm:text-6xl lg:text-7xl perspective-3d">
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">บั</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">น</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ทึ</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">ก</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ก</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">า</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ร</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">เ</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">งิ</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">น</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ส่</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">ว</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">น</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">ตั</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ว</span>
+                    </h1>
+                    <p class="max-w-xl mx-auto text-xl font-sans leading-relaxed tracking-wide fade-in-text">
+                        <span class="inline-block reveal-text" style="--delay: 2s">จัดการการเงิน</span>
+                        <span class="inline-block reveal-text" style="--delay: 2s">ของคุณอย่างชาญฉลาด</span>
+                        <span class="inline-block reveal-text" style="--delay: 2s">วางแผนและติดตาม</span>
+                        <span class="inline-block reveal-text" style="--delay: 2s">เป้าหมายได้อย่างมี</span>
+                        <span class="inline-block reveal-text" style="--delay: 2s">ประสิทธิภาพ</span>
+                    </p>
+                </div>
+
+                <!-- Enhanced CTA Buttons -->
+                <div class="flex justify-center space-x-6">
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('dashboard.index') }}" 
+                       class="relative inline-flex items-center px-8 py-4 text-lg font-medium rounded-xl text-white overflow-hidden group">
+                        <!-- Background gradients -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transition-transform duration-300 ease-out transform"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 transition-transform duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></div>
+                        
+                        <!-- Content -->
+                        <span class="relative z-10 flex items-center">
+                            <span class="transform transition-transform duration-300 group-hover:scale-110">ไปที่แดชบอร์ด</span>
+                            <svg class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1" 
+                                 fill="none" 
+                                 stroke="currentColor" 
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round" 
+                                      stroke-linejoin="round" 
+                                      stroke-width="2" 
+                                      d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </span>
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('auth.login') }}"
+                       class="relative inline-flex items-center px-8 py-4 text-lg font-medium rounded-xl text-white overflow-hidden group">
+                        <!-- Background gradients -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transition-transform duration-300 ease-out transform"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 transition-transform duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></div>
+                        
+                        <!-- Content -->
+                        <span class="relative z-10 flex items-center">
+                            <span class="transform transition-transform duration-300 group-hover:scale-110">เข้าสู่ระบบ</span>
+                            <svg class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1" 
+                                 fill="none" 
+                                 stroke="currentColor" 
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round" 
+                                      stroke-linejoin="round" 
+                                      stroke-width="2" 
+                                      d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Feature Cards with Enhanced Styling -->
+            <div class="mt-32 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {% for card in [
+                    {'icon': 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01', 'title': 'บันทึกรายรับ-รายจ่าย', 'desc': 'บันทึกและจัดหมวดหมู่ธุรกรรมทางการเงินได้อย่างง่ายดาย'},
+                    {'icon': 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z', 'title': 'วิเคราะห์การใช้จ่าย', 'desc': 'ดูภาพรวมและวิเคราะห์พฤติกรรมการใช้จ่ายผ่านกราฟที่เข้าใจง่าย'},
+                    {'icon': 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6', 'title': 'ตั้งเป้าหมายการออม', 'desc': 'วางแผนและติดตามความคืบหน้าในการออมเงินเพื่อเป้าหมายต่างๆ'}
+                ] %}
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl blur opacity-25 group-hover:opacity-100 transition-all duration-1000"></div>
+                    <div class="relative p-6 bg-white/90 backdrop-blur-sm rounded-xl flex items-start space-x-6 hover:bg-white transition-all duration-300">
+                        <svg class="w-8 h-8 text-blue-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ card.icon }}" />
+                        </svg>
+                        <div class="space-y-2">
+                            <h3 class="text-slate-800 text-lg font-semibold group-hover:text-blue-600 transition-colors duration-300">{{ card.title }}</h3>
+                            <p class="text-slate-600 text-sm group-hover:text-slate-700 transition-colors duration-300">{{ card.desc }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .gradient-background {
+        background: linear-gradient(-45deg, 
+            #000000,
+            #0a0a1f, 
+            #1a1a3a, 
+            #0a0a1f,
+            #000000
+        );
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        position: relative;
+        min-height: 100vh;
+        background-attachment: fixed;
+    }
+    
+    .gradient-background::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at center,
+            rgba(99, 102, 241, 0.15) 0%,
+            rgba(30, 27, 75, 0.1) 25%,
+            transparent 70%
+        );
+        animation: pulseGlow 4s ease-in-out infinite;
+        z-index: 1; /* Add this */
+        pointer-events: none; /* Add this to allow clicks through */
+    }
+    
+    /* Background elements */
+    .absolute.inset-0 {
+        z-index: 1;
+        pointer-events: none; /* Allow clicks through background elements */
+    }
+    
+    /* Clickable elements */
+    .floating-icon,
+    .relative.group,
+    .btn,
+    a {
+        position: relative;
+        z-index: 30; /* Higher than background elements */
+    }
+    
+    /* Ensure glowing orbs don't block clicks */
+    .animate-glow,
+    .animate-glow-slow,
+    .animate-glow-slower {
+        pointer-events: none;
+    }
+    
+    @keyframes pulseGlow {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 0.8; transform: scale(1.1); }
+    }
+    /* BACK GROUND COLOR ONLY */
+    
+    .relative.group > div:last-child {
+        background: linear-gradient(
+            135deg,
+            rgba(10, 10, 31, 0.8) 0%,
+            rgba(26, 26, 58, 0.8) 50%,
+            rgba(10, 10, 31, 0.8) 100%
+        ) !important;
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        box-shadow: 
+            0 0 30px rgba(0, 0, 0, 0.3),
+            inset 0 0 15px rgba(99, 102, 241, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Glow effect for cards */
+    .relative.group::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        background: linear-gradient(
+            45deg,
+            rgba(99, 102, 241, 0.1),
+            rgba(59, 130, 246, 0.1)
+        );
+        border-radius: 1rem;
+        z-index: -1;
+        transition: opacity 0.3s ease;
+        opacity: 0;
+    }
+    
+    /* Hover effect */
+    .relative.group:hover::before {
+        opacity: 1;
+    }
+    
+    /* Icon styling */
+    .relative.group svg {
+        color: rgba(96, 165, 250, 0.8);
+        filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3));
+    }
+    
+    /* Text styling */
+    .relative.group h3 {
+        color: rgba(219, 234, 254, 0.9) !important;
+        text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+    }
+    
+    .relative.group p {
+        color: rgba(199, 210, 254, 0.7) !important;
+    }
+    
+    /* Hover transitions */
+    .relative.group:hover > div:last-child {
+        background: linear-gradient(
+            135deg,
+            rgba(15, 15, 46, 0.9) 0%,
+            rgba(31, 31, 73, 0.9) 50%,
+            rgba(15, 15, 46, 0.9) 100%
+        ) !important;
+        transform: translateY(-2px);
+        box-shadow: 
+            0 0 40px rgba(0, 0, 0, 0.4),
+            inset 0 0 20px rgba(99, 102, 241, 0.15);
+    }
+    
+    /* Add subtle animation */
+    .relative.group {
+        transition: transform 0.3s ease;
+        animation: cardFloat 6s ease-in-out infinite;
+    }
+    
+    @keyframes cardFloat {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+    
+    /* Enhanced glow orbs */
+    .animate-glow {
+        animation: glow 4s ease-in-out infinite;
+    }
+    
+    .animate-glow-slow {
+        animation: glow 6s ease-in-out infinite;
+    }
+    
+    .animate-glow-slower {
+        animation: glow 8s ease-in-out infinite;
+    }
+    
+    @keyframes glow {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 0.3;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 0.5;
+        }
+    }
+    
+    /* Update glowing orbs colors for darker theme */
+    .from-blue-500\/30 {
+        --tw-from-opacity: 0.15;
+    }
+    
+    .via-blue-600\/20 {
+        --tw-via-opacity: 0.1;
+    }
+    
+    .to-purple-500\/30 {
+        --tw-to-opacity: 0.15;
+    }
+    
+    @keyframes float {
+       0% { transform: translateY(0px) }
+       50% { transform: translateY(-20px) }
+       100% { transform: translateY(0px) }
+    }
+    /* END BACKGROUND PART 2 CETRILT TEXT */
+
+    /* text part */
+    .perspective-3d {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+    }
+    
+    .animate-text-reveal-random {
+        opacity: 0;
+        transform: rotateX(-90deg) rotateY(0deg) translateZ(-50px);
+        animation: textRevealRandom 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        animation-delay: var(--delay);
+        background: linear-gradient(120deg, 
+            #60a5fa 0%, 
+            #93c5fd 25%, 
+            #3b82f6 50%,
+            #93c5fd 75%, 
+            #60a5fa 100%
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    @keyframes textRevealRandom {
+        0% {
+            opacity: 0;
+            transform: rotateX(calc(-90deg * var(--direction))) 
+                      rotateY(calc(60deg * var(--direction))) 
+                      translateZ(-100px);
+            filter: blur(10px);
+        }
+        30% {
+            opacity: 0.3;
+            transform: rotateX(calc(-45deg * var(--direction))) 
+                      rotateY(calc(30deg * var(--direction))) 
+                      translateZ(-50px);
+            filter: blur(5px);
+        }
+        100% {
+            opacity: 1;
+            transform: rotateX(0deg) rotateY(0deg) translateZ(0);
+            filter: blur(0);
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.5),
+                        0 0 40px rgba(59, 130, 246, 0.3);
+        }
+    }
+    
+    /* Continuous gradient animation after reveal */
+    .animate-text-reveal-random::after {
+        animation: gradientShift 3s ease-in-out infinite;
+    }
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Hover effect */
+    .animate-text-reveal-random:hover {
+        transform: translateY(-2px) translateZ(30px);
+        text-shadow: 0 0 30px rgba(96, 165, 250, 0.8),
+                     0 0 60px rgba(59, 130, 246, 0.4);
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    /* FOR THE H1 ONLY */
+    .fade-in-text {
+        color: rgba(219, 234, 254, 0.9); /* Light blue color */
+        text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+    }
+    
+    .reveal-text {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: revealText 1s ease-out forwards;
+        animation-delay: var(--delay);
+    }
+    
+    @keyframes revealText {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+            filter: brightness(0);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+            filter: brightness(1);
+        }
+    }
+    
+    /* Hover effect for the entire text */
+    .fade-in-text:hover .reveal-text {
+        color: white;
+        text-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+        transition: all 0.3s ease;
+    }
+    /* FOR THE P OF THE H1 */
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Text animation
+        const chars = document.querySelectorAll('.animate-text-reveal-random');
+        chars.forEach(char => {
+            const randomDelay = (Math.random() * 1.4).toFixed(2);
+            char.style.setProperty('--delay', `${randomDelay}s`);
+        });
+    });
+    
+</script>
+
+{%endblock%}
