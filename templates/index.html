@@ -1,8 +1,7 @@
 {% extends "base.html" %}
-
 {% block content %}
 <!-- Hero Section -->
-<div class="min-h-screen relative overflow-hidden gradient-background">
+<div class="min-h-screen relative overflow-hidden gradient-background perspective-3d">
     <!-- Animated Background Elements -->
     <div class="absolute inset-0">
         <!-- Grid Lines -->
@@ -10,14 +9,6 @@
             {% for i in range(12) %}
                 <div class="h-full border-r border-blue-500/20"></div>
             {% endfor %}
-        </div>
-
-        <!-- Chart Wave Animation -->
-        <div class="absolute bottom-0 w-full h-64 opacity-10">
-            <svg class="w-full h-full" viewBox="0 0 1440 320" preserveAspectRatio="none">
-                <path class="animate-wave" fill="rgb(59 130 246 / 0.5)" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-                <path class="animate-wave-slow" fill="rgb(99 102 241 / 0.3)" d="M0,32L48,37.3C96,43,192,53,288,69.3C384,85,480,107,576,90.7C672,75,768,21,864,21.3C960,21,1056,75,1152,74.7C1248,75,1344,21,1392,-5.3L1440,-32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-            </svg>
         </div>
 
         <!-- Enhanced Floating Icons with Better Animation -->
@@ -41,16 +32,34 @@
     </div>
 
     <!-- Main Content with Enhanced Styling -->
-    <div class="relative">
+    <div class="relative z-20">
         <div class="max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8">
             <div class="text-center space-y-12">
                 <!-- Enhanced Hero Title -->
-                <div class="space-y-5">
-                    <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 sm:text-6xl sm:tracking-tight lg:text-7xl font-display hover:scale-105 transform transition-all duration-500 ease-out">
-                        บันทึกการเงินส่วนตัว
+                <div class="space-y-5 perspective-text">
+                    <h1 class="text-5xl font-extrabold sm:text-6xl lg:text-7xl perspective-3d">
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">บั</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">น</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ทึ</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">ก</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ก</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">า</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ร</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">เ</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">งิ</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">น</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ส่</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">ว</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">น</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: -1">ตั</span>
+                        <span class="inline-block animate-text-reveal-random" style="--delay: {{ (range(1, 15) | random) * 0.1 }}s; --direction: 1">ว</span>
                     </h1>
-                    <p class="max-w-xl mx-auto text-xl text-blue-100 font-sans leading-relaxed tracking-wide drop-shadow-lg hover:text-white transition-all duration-300">
-                        จัดการการเงินของคุณอย่างชาญฉลาด วางแผนและติดตามเป้าหมายได้อย่างมีประสิทธิภาพ
+                    <p class="max-w-xl mx-auto text-xl font-sans leading-relaxed tracking-wide fade-in-text">
+                        <span class="inline-block reveal-text" style="--delay: 2s">จัดการการเงิน</span>
+                        <span class="inline-block reveal-text" style="--delay: 2s">ของคุณอย่างชาญฉลาด</span>
+                        <span class="inline-block reveal-text" style="--delay: 2s">วางแผนและติดตาม</span>
+                        <span class="inline-block reveal-text" style="--delay: 2s">เป้าหมายได้อย่างมี</span>
+                        <span class="inline-block reveal-text" style="--delay: 2s">ประสิทธิภาพ</span>
                     </p>
                 </div>
 
@@ -58,16 +67,46 @@
                 <div class="flex justify-center space-x-6">
                     {% if current_user.is_authenticated %}
                     <a href="{{ url_for('dashboard.index') }}" 
-                       class="group relative inline-flex items-center px-8 py-4 text-lg font-medium rounded-xl text-white overflow-hidden">
-                        <span class="absolute inset-0 w-full h-full transition-all duration-300 transform translate-x-0 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:translate-x-full ease"></span>
-                        <span class="absolute inset-0 w-full h-full transition-all duration-300 transform -translate-x-full bg-gradient-to-r from-indigo-600 to-blue-600 group-hover:translate-x-0 ease"></span>
-                        <span class="relative group-hover:scale-110 transition-transform duration-300">ไปที่แดชบอร์ด</span>
-                        <svg class="relative ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
+                       class="relative inline-flex items-center px-8 py-4 text-lg font-medium rounded-xl text-white overflow-hidden group">
+                        <!-- Background gradients -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transition-transform duration-300 ease-out transform"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 transition-transform duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></div>
+                        
+                        <!-- Content -->
+                        <span class="relative z-10 flex items-center">
+                            <span class="transform transition-transform duration-300 group-hover:scale-110">ไปที่แดชบอร์ด</span>
+                            <svg class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1" 
+                                 fill="none" 
+                                 stroke="currentColor" 
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round" 
+                                      stroke-linejoin="round" 
+                                      stroke-width="2" 
+                                      d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </span>
                     </a>
                     {% else %}
-                    <!-- Similar enhanced button for login -->
+                    <a href="{{ url_for('auth.login') }}"
+                       class="relative inline-flex items-center px-8 py-4 text-lg font-medium rounded-xl text-white overflow-hidden group">
+                        <!-- Background gradients -->
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transition-transform duration-300 ease-out transform"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-indigo-600 to-blue-600 transition-transform duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></div>
+                        
+                        <!-- Content -->
+                        <span class="relative z-10 flex items-center">
+                            <span class="transform transition-transform duration-300 group-hover:scale-110">เข้าสู่ระบบ</span>
+                            <svg class="ml-2 h-5 w-5 transform transition-transform duration-300 group-hover:translate-x-1" 
+                                 fill="none" 
+                                 stroke="currentColor" 
+                                 viewBox="0 0 24 24">
+                                <path stroke-linecap="round" 
+                                      stroke-linejoin="round" 
+                                      stroke-width="2" 
+                                      d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </span>
+                    </a>
                     {% endif %}
                 </div>
             </div>
@@ -99,42 +138,178 @@
 
 <style>
     .gradient-background {
-        background: linear-gradient(-45deg, #020617, #1e1b4b, #312e81, #1e1b4b, #020617);
+        background: linear-gradient(-45deg, 
+            #000000,
+            #0a0a1f, 
+            #1a1a3a, 
+            #0a0a1f,
+            #000000
+        );
         background-size: 400% 400%;
         animation: gradientBG 15s ease infinite;
+        position: relative;
+        min-height: 100vh;
+        background-attachment: fixed;
     }
     
-    @keyframes gradientBG {
-        0% { background-position: 0% 50% }
-        50% { background-position: 100% 50% }
-        100% { background-position: 0% 50% }
+    .gradient-background::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            circle at center,
+            rgba(99, 102, 241, 0.15) 0%,
+            rgba(30, 27, 75, 0.1) 25%,
+            transparent 70%
+        );
+        animation: pulseGlow 4s ease-in-out infinite;
+        z-index: 1; /* Add this */
+        pointer-events: none; /* Add this to allow clicks through */
     }
     
-    @keyframes wave {
-       0% { transform: translateX(0) translateZ(0) scaleY(1) }
-       50% { transform: translateX(-25%) translateZ(0) scaleY(0.55) }
-       100% { transform: translateX(-50%) translateZ(0) scaleY(1) }
+    /* Background elements */
+    .absolute.inset-0 {
+        z-index: 1;
+        pointer-events: none; /* Allow clicks through background elements */
     }
     
-    .animate-wave {
-       animation: wave 15s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+    /* Clickable elements */
+    .floating-icon,
+    .relative.group,
+    .btn,
+    a {
+        position: relative;
+        z-index: 30; /* Higher than background elements */
     }
     
-    .animate-wave-slow {
-       animation: wave 18s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+    /* Ensure glowing orbs don't block clicks */
+    .animate-glow,
+    .animate-glow-slow,
+    .animate-glow-slower {
+        pointer-events: none;
     }
     
-    .animate-pulse-slow {
-       animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    @keyframes pulseGlow {
+        0%, 100% { opacity: 0.5; transform: scale(1); }
+        50% { opacity: 0.8; transform: scale(1.1); }
+    }
+    /* BACK GROUND COLOR ONLY */
+    
+    .relative.group > div:last-child {
+        background: linear-gradient(
+            135deg,
+            rgba(10, 10, 31, 0.8) 0%,
+            rgba(26, 26, 58, 0.8) 50%,
+            rgba(10, 10, 31, 0.8) 100%
+        ) !important;
+        border: 1px solid rgba(99, 102, 241, 0.1);
+        box-shadow: 
+            0 0 30px rgba(0, 0, 0, 0.3),
+            inset 0 0 15px rgba(99, 102, 241, 0.1);
+        backdrop-filter: blur(10px);
     }
     
-    .animate-pulse-slower {
-       animation: pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    /* Glow effect for cards */
+    .relative.group::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        background: linear-gradient(
+            45deg,
+            rgba(99, 102, 241, 0.1),
+            rgba(59, 130, 246, 0.1)
+        );
+        border-radius: 1rem;
+        z-index: -1;
+        transition: opacity 0.3s ease;
+        opacity: 0;
     }
     
-    .floating-icon {
-       position: absolute;
-       animation: float 6s ease-in-out infinite;
+    /* Hover effect */
+    .relative.group:hover::before {
+        opacity: 1;
+    }
+    
+    /* Icon styling */
+    .relative.group svg {
+        color: rgba(96, 165, 250, 0.8);
+        filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.3));
+    }
+    
+    /* Text styling */
+    .relative.group h3 {
+        color: rgba(219, 234, 254, 0.9) !important;
+        text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+    }
+    
+    .relative.group p {
+        color: rgba(199, 210, 254, 0.7) !important;
+    }
+    
+    /* Hover transitions */
+    .relative.group:hover > div:last-child {
+        background: linear-gradient(
+            135deg,
+            rgba(15, 15, 46, 0.9) 0%,
+            rgba(31, 31, 73, 0.9) 50%,
+            rgba(15, 15, 46, 0.9) 100%
+        ) !important;
+        transform: translateY(-2px);
+        box-shadow: 
+            0 0 40px rgba(0, 0, 0, 0.4),
+            inset 0 0 20px rgba(99, 102, 241, 0.15);
+    }
+    
+    /* Add subtle animation */
+    .relative.group {
+        transition: transform 0.3s ease;
+        animation: cardFloat 6s ease-in-out infinite;
+    }
+    
+    @keyframes cardFloat {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-5px);
+        }
+    }
+    
+    /* Enhanced glow orbs */
+    .animate-glow {
+        animation: glow 4s ease-in-out infinite;
+    }
+    
+    .animate-glow-slow {
+        animation: glow 6s ease-in-out infinite;
+    }
+    
+    .animate-glow-slower {
+        animation: glow 8s ease-in-out infinite;
+    }
+    
+    @keyframes glow {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 0.3;
+        }
+        50% {
+            transform: scale(1.1);
+            opacity: 0.5;
+        }
+    }
+    
+    /* Update glowing orbs colors for darker theme */
+    .from-blue-500\/30 {
+        --tw-from-opacity: 0.15;
+    }
+    
+    .via-blue-600\/20 {
+        --tw-via-opacity: 0.1;
+    }
+    
+    .to-purple-500\/30 {
+        --tw-to-opacity: 0.15;
     }
     
     @keyframes float {
@@ -142,6 +317,120 @@
        50% { transform: translateY(-20px) }
        100% { transform: translateY(0px) }
     }
-    </style>
+    /* END BACKGROUND PART 2 CETRILT TEXT */
 
-{% endblock %}
+    /* text part */
+    .perspective-3d {
+        perspective: 1000px;
+        transform-style: preserve-3d;
+    }
+    
+    .animate-text-reveal-random {
+        opacity: 0;
+        transform: rotateX(-90deg) rotateY(0deg) translateZ(-50px);
+        animation: textRevealRandom 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        animation-delay: var(--delay);
+        background: linear-gradient(120deg, 
+            #60a5fa 0%, 
+            #93c5fd 25%, 
+            #3b82f6 50%,
+            #93c5fd 75%, 
+            #60a5fa 100%
+        );
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    @keyframes textRevealRandom {
+        0% {
+            opacity: 0;
+            transform: rotateX(calc(-90deg * var(--direction))) 
+                      rotateY(calc(60deg * var(--direction))) 
+                      translateZ(-100px);
+            filter: blur(10px);
+        }
+        30% {
+            opacity: 0.3;
+            transform: rotateX(calc(-45deg * var(--direction))) 
+                      rotateY(calc(30deg * var(--direction))) 
+                      translateZ(-50px);
+            filter: blur(5px);
+        }
+        100% {
+            opacity: 1;
+            transform: rotateX(0deg) rotateY(0deg) translateZ(0);
+            filter: blur(0);
+            text-shadow: 0 0 20px rgba(96, 165, 250, 0.5),
+                        0 0 40px rgba(59, 130, 246, 0.3);
+        }
+    }
+    
+    /* Continuous gradient animation after reveal */
+    .animate-text-reveal-random::after {
+        animation: gradientShift 3s ease-in-out infinite;
+    }
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Hover effect */
+    .animate-text-reveal-random:hover {
+        transform: translateY(-2px) translateZ(30px);
+        text-shadow: 0 0 30px rgba(96, 165, 250, 0.8),
+                     0 0 60px rgba(59, 130, 246, 0.4);
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    /* FOR THE H1 ONLY */
+    .fade-in-text {
+        color: rgba(219, 234, 254, 0.9); /* Light blue color */
+        text-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+    }
+    
+    .reveal-text {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: revealText 1s ease-out forwards;
+        animation-delay: var(--delay);
+    }
+    
+    @keyframes revealText {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+            filter: brightness(0);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+            filter: brightness(1);
+        }
+    }
+    
+    /* Hover effect for the entire text */
+    .fade-in-text:hover .reveal-text {
+        color: white;
+        text-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+        transition: all 0.3s ease;
+    }
+    /* FOR THE P OF THE H1 */
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Text animation
+        const chars = document.querySelectorAll('.animate-text-reveal-random');
+        chars.forEach(char => {
+            const randomDelay = (Math.random() * 1.4).toFixed(2);
+            char.style.setProperty('--delay', `${randomDelay}s`);
+        });
+    });
+    
+</script>
+
+{%endblock%}
